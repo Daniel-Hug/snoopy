@@ -24,19 +24,20 @@ var Snoopy = (function() {
 		changed.call(this, prop);
 	};
 
-	Snoopy.prototype.snoop = function(props, map) {
-		if (map) {
+	Snoopy.prototype.snoop = function(props, mapFn) {
+		if (mapFn) {
 			var snooper;
-			var mapOutput;
+			var mapFnOutput;
 			var propToVal = this.get.bind(this);
 			var propsArr = props.split(' ');
+			var instance = this;
 
-			// caller calls map with the values of the passed props
-			// then, if there is a snooper, calls that passing the value returned from the map 
+			// caller calls mapFn with the values of the passed props
+			// then, if there is a snooper, calls that passing the value returned from the mapFn 
 			var caller = function caller() {
 				var propVals = propsArr.map(propToVal);
-				mapOutput = map.apply(null, propVals);
-				if (snooper) snooper(mapOutput);
+				mapFnOutput = mapFn.apply(instance, propVals);
+				if (snooper) snooper.call(instance, mapFnOutput);
 			};
 
 			caller();
@@ -50,7 +51,7 @@ var Snoopy = (function() {
 
 			return function mappedSnoop(newSnooper) {
 				snooper = newSnooper;
-				snooper(mapOutput);
+				snooper.call(instance, mapFnOutput);
 			};
 		} else {
 			// snoopable

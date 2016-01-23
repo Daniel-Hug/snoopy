@@ -1,6 +1,10 @@
 # snoopy
 Observable objects in JS
 
+## use with [DOM Builder](https://github.com/Daniel-Hug/DOM-Builder)
+
+This Observable module was made with DOM Builder in mind and the two form a very powerful duo.
+
 ## example
 
 ```js
@@ -42,23 +46,27 @@ There are two ways to get the value of a property on a Snoopy instance:
 1. `person.get('name');`
 2. `person.name`
 
-### `Snoopy.prototype.snoop(property, mapFn)`
+### `Snoopy.prototype.snoop(property, mapFn)(snooperFn)`
 
-**arguments**  
+For the above syntax `mapFn` is an optional function you can pass to modify the value before it's sent to the `snooperFn`.
 
-Here are the possible ways to call `.snoop()`:
+If you don't want a map function, you have two ways to call `.snoop()`:
 
 ```js
-person.snoop('name')(function snooper(name) {
+person.snoop('firstName')(function snooper(name) {
 	console.log('name is now ' + name);
 })
 ```
 
+or:
+
 ```js
-person.snoop('name', function snooper(name) {
+person.snoop('firstName', function snooper(name) {
 	console.log('name is now ' + name);
 })
 ```
+
+This is what that would look like with a `mapFn` specified
 
 ```js
 person.snoop('firstName lastName', function map(firstName, lastName) {
@@ -70,7 +78,3 @@ person.snoop('firstName lastName', function map(firstName, lastName) {
 
 **return value**  
 When `.snoop()` is called, it returns a "snoopable" function. The snoopable function accepts a callback, calls it right away passing the values of the properties being snooped, and calls it again whenever one of the values change.
-
-## use with [DOM Builder](https://github.com/Daniel-Hug/DOM-Builder)
-
-This Observable module was made with DOM Builder in mind and the two form a very powerful duo.
