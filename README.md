@@ -18,7 +18,7 @@ counter.snoop('count', function(val) {
 
 // log: "3 is odd." or "0 is even."
 counter.snoop('even', function(even) {
-	console.log(this.counter + ' is ' + (even ? 'even' : 'odd') + '.');
+	console.log(this.count + ' is ' + (even ? 'even' : 'odd') + '.');
 });
 ```
 
